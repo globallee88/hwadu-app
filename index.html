@@ -292,6 +292,31 @@ html[data-theme="light"] .level-badge{background:rgba(74,122,104,0.09);border-co
 .lock-icon{width:44px;height:44px;border-radius:50%;background:rgba(123,158,255,0.12);border:1px solid rgba(123,158,255,0.28);display:flex;align-items:center;justify-content:center}
 .lock-msg{font-size:12px;color:var(--text2);text-align:center;line-height:1.6}
 
+/* ── Premium modal ── */
+#premium-modal{position:fixed;inset:0;z-index:500;background:rgba(6,6,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:flex-end;justify-content:center;padding-bottom:var(--safe-b)}
+#premium-modal.hidden{display:none}
+.premium-sheet{background:var(--surface);border-radius:28px 28px 0 0;padding:28px 24px calc(32px + var(--safe-b));width:100%;max-width:480px;border-top:1px solid var(--border)}
+html[data-theme="light"] .premium-sheet{background:#FDFAF4}
+.premium-header{text-align:center;margin-bottom:24px}
+.premium-icon{font-size:40px;margin-bottom:12px}
+.premium-title{font-size:22px;font-weight:200;color:var(--accent);font-family:var(--serif-en);font-style:italic;margin-bottom:6px}
+.premium-sub{font-size:14px;color:var(--text2);line-height:1.7}
+.premium-plans{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.premium-plan{border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:space-between}
+.premium-plan.plan-sel{border-color:var(--accent);background:rgba(123,158,255,0.07)}
+html[data-theme="light"] .premium-plan.plan-sel{border-color:var(--accent);background:rgba(74,122,104,0.06)}
+.plan-label{font-size:15px;color:var(--text)}
+.plan-desc{font-size:12px;color:var(--text3);margin-top:2px}
+.plan-price{font-size:17px;font-family:var(--serif-en);color:var(--accent);font-style:italic}
+.plan-badge{font-size:10px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:50px;margin-left:6px;vertical-align:middle}
+html[data-theme="light"] .plan-badge{color:#fff}
+.premium-features{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;padding:14px 16px;background:var(--surface2);border-radius:12px}
+.premium-feat{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px}
+.premium-feat::before{content:'✓';color:var(--accent);font-size:12px;font-weight:600;flex-shrink:0}
+#premium-pay-btn{width:100%;padding:16px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:#fff;font-size:15px;font-family:var(--serif-ko);cursor:pointer;font-weight:500;box-shadow:0 4px 20px rgba(123,158,255,0.30);margin-bottom:10px}
+html[data-theme="light"] #premium-pay-btn{color:#fff;background:linear-gradient(135deg,#4A7A68 0%,#3A6358 100%);box-shadow:0 4px 20px rgba(74,122,104,0.28)}
+.premium-close{width:100%;padding:12px;background:none;border:none;color:var(--text3);font-size:14px;font-family:var(--serif-ko);cursor:pointer}
+
 /* ── Community teaser card (enhanced — with pulse animation) ── */
 .community-teaser{background:linear-gradient(135deg,rgba(123,158,255,0.10) 0%,rgba(168,230,207,0.03) 60%,rgba(80,100,220,0.04) 100%);border:1px solid rgba(123,158,255,0.22);border-radius:var(--radius);padding:32px 20px;text-align:center;margin-top:28px;position:relative;overflow:hidden}
 /* Pulsing orb behind the counter */
@@ -530,6 +555,41 @@ html[data-theme="light"] .level-badge{background:rgba(74,122,104,0.09);border-co
   <button class="tab-btn" data-tab="sleep" onclick="goTab('sleep',this)"><span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>취침</button>
 </div>
 
+<!-- 프리미엄 모달 -->
+<div id="premium-modal" class="hidden">
+  <div class="premium-sheet">
+    <div class="premium-header">
+      <div class="premium-icon">☸</div>
+      <div class="premium-title">모든 화두 열기</div>
+      <div class="premium-sub">지금 7개 → 25개 화두로<br>더 깊은 수행을 시작하세요</div>
+    </div>
+    <div class="premium-plans">
+      <div class="premium-plan plan-sel" id="premium-plan-monthly" onclick="selectPlan('monthly')">
+        <div>
+          <div class="plan-label">월 구독</div>
+          <div class="plan-desc">언제든 해지 가능</div>
+        </div>
+        <div class="plan-price">2,900원<span style="font-size:12px;color:var(--text3)">/월</span></div>
+      </div>
+      <div class="premium-plan" id="premium-plan-lifetime" onclick="selectPlan('lifetime')">
+        <div>
+          <div class="plan-label">평생 이용권<span class="plan-badge">추천</span></div>
+          <div class="plan-desc">한 번 결제, 영구 사용</div>
+        </div>
+        <div class="plan-price">9,900원</div>
+      </div>
+    </div>
+    <div class="premium-features">
+      <div class="premium-feat">25개 화두 전체 개방</div>
+      <div class="premium-feat">수행 프로그램 (21일, 49일) 모두 이용</div>
+      <div class="premium-feat">취침 수행 화두 전체 이용</div>
+      <div class="premium-feat">커뮤니티 오픈 시 우선 입장</div>
+    </div>
+    <button id="premium-pay-btn" onclick="startPayment()">월 2,900원 결제하기</button>
+    <button class="premium-close" onclick="closePremiumModal()">다음에 하기</button>
+  </div>
+</div>
+
 <script>
 var HWADU=[
   {ko:'이뭣고',en:'What is this?',desc:'지금 이 순간, 보고 듣고 느끼는 이것이 무엇인가를 묻는 화두',trad:'선가에서 가장 보편적으로 사용되는 화두. 모든 경험의 근원을 직접 가리킨다.'},
@@ -565,9 +625,9 @@ var PLANS=[
 ];
 var SLEEP_IDXS=[23,20,15];
 
-var S={lang:'ko',hwIdx:0,records:[],plan:null,notifyEnabled:false,eveningNotify:false,soundMode:'off',onboarded:false,timerMin:5,totalMinutes:0,sleepHwIdx:0,detailIdx:-1,theme:'light',meditationDates:[],waitlistJoined:false};
+var S={lang:'ko',hwIdx:0,records:[],plan:null,notifyEnabled:false,eveningNotify:false,soundMode:'off',onboarded:false,timerMin:5,totalMinutes:0,sleepHwIdx:0,detailIdx:-1,theme:'light',meditationDates:[],waitlistJoined:false,isPremium:false};
 
-function load(){try{var d=JSON.parse(localStorage.getItem('hwadu_v2')||'{}');['lang','hwIdx','records','plan','notifyEnabled','eveningNotify','soundMode','onboarded','timerMin','totalMinutes','sleepHwIdx','theme','meditationDates'].forEach(function(k){if(d[k]!==undefined)S[k]=d[k];});}catch(e){}}
+function load(){try{var d=JSON.parse(localStorage.getItem('hwadu_v2')||'{}');['lang','hwIdx','records','plan','notifyEnabled','eveningNotify','soundMode','onboarded','timerMin','totalMinutes','sleepHwIdx','theme','meditationDates','isPremium'].forEach(function(k){if(d[k]!==undefined)S[k]=d[k];});}catch(e){}}
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme',t);
   document.getElementById('theme-icon-dark').style.display=t==='light'?'block':'none';
@@ -891,6 +951,7 @@ function calcLevel(){
   return LEVELS[0];
 }
 function calcUnlocked(){
+  if(S.isPremium)return HWADU.length;
   var streak=calcStreak();
   var base=7;
   var bonus=0;
@@ -924,13 +985,57 @@ function joinWaitlist(){
   if(c)c.textContent=String(getWaitlistCount()+1);
   toast('커뮤니티 오픈 시 먼저 알려드리겠습니다 🔔');
 }
-function showLockToast(){
-  var need=calcUnlocked();
-  var diff=S.hwIdx-need+1;
-  if(diff<=0)return;
-  var streak=calcStreak();
-  if(streak<3)toast('3일 연속 참구하면 더 많은 화두가 열립니다');
-  else toast('계속 수행하면 화두가 하나씩 열립니다');
+function showLockToast(){showPremiumModal();}
+function showPremiumModal(){
+  document.getElementById('premium-modal').classList.remove('hidden');
+  document.getElementById('premium-plan-monthly').classList.add('plan-sel');
+  document.getElementById('premium-plan-lifetime').classList.remove('plan-sel');
+  _selectedPlan='monthly';
+}
+function closePremiumModal(){document.getElementById('premium-modal').classList.add('hidden');}
+var _selectedPlan='monthly';
+function selectPlan(p){
+  _selectedPlan=p;
+  document.getElementById('premium-plan-monthly').classList.toggle('plan-sel',p==='monthly');
+  document.getElementById('premium-plan-lifetime').classList.toggle('plan-sel',p==='lifetime');
+  var btn=document.getElementById('premium-pay-btn');
+  btn.textContent=p==='monthly'?'월 2,900원 결제하기':'9,900원 평생 이용권 결제하기';
+}
+function startPayment(){
+  var amount=_selectedPlan==='monthly'?2900:9900;
+  var orderName=_selectedPlan==='monthly'?'화두 프리미엄 월정기':'화두 프리미엄 평생이용권';
+  var orderId='hwadu-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+  if(typeof TossPayments==='undefined'){toast('결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');loadTossSDK(function(){startPayment();});return;}
+  var toss=TossPayments('test_ck_docs_Ovk5rk1EwkEbP0W43n07xlzm');
+  toss.requestPayment('카드',{
+    amount:amount,
+    orderId:orderId,
+    orderName:orderName,
+    customerName:'화두 사용자',
+    successUrl:window.location.origin+window.location.pathname+'?payment=success&plan='+_selectedPlan,
+    failUrl:window.location.origin+window.location.pathname+'?payment=fail'
+  }).catch(function(e){if(e.code!=='USER_CANCEL')toast('결제 중 오류가 발생했습니다: '+e.message);});
+}
+function loadTossSDK(cb){
+  if(document.getElementById('toss-sdk'))return cb&&cb();
+  var s=document.createElement('script');
+  s.id='toss-sdk';
+  s.src='https://js.tosspayments.com/v1/payment';
+  s.onload=function(){cb&&cb();};
+  document.head.appendChild(s);
+}
+function checkPaymentResult(){
+  var params=new URLSearchParams(window.location.search);
+  if(params.get('payment')==='success'){
+    var plan=params.get('plan')||'lifetime';
+    S.isPremium=true;save();
+    history.replaceState({},'',window.location.pathname);
+    renderHwadu();renderLibrary&&renderLibrary();
+    toast('🎉 프리미엄이 활성화됐습니다! 25개 화두가 모두 열렸습니다');
+  }else if(params.get('payment')==='fail'){
+    history.replaceState({},'',window.location.pathname);
+    toast('결제가 취소됐습니다');
+  }
 }
 function updateLevelBadge(){
   var lv=calcLevel();var el=document.getElementById('level-badge');if(!el)return;
@@ -1097,6 +1202,8 @@ function init(){
     if(plan){var day=Math.floor((new Date()-new Date(S.plan.startDate))/86400000);if(day<plan.hwIdxs.length){S.hwIdx=plan.hwIdxs[day];save();renderHwadu();}}
   }
   if(S.notifyEnabled)scheduleNotification();
+  loadTossSDK();
+  checkPaymentResult();
 }
 document.addEventListener('DOMContentLoaded',init);
 </script>
