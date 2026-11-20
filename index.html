@@ -1006,7 +1006,7 @@ function startPayment(){
   var orderName=_selectedPlan==='monthly'?'화두 프리미엄 월정기':'화두 프리미엄 평생이용권';
   var orderId='hwadu-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
   if(typeof TossPayments==='undefined'){toast('결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');loadTossSDK(function(){startPayment();});return;}
-  var toss=TossPayments('test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm');
+  var toss=TossPayments('test_ck_c19zBBeRCedsslrOLFgohXGX2kk8nShOBH');
   toss.requestPayment('카드',{
     amount:amount,
     orderId:orderId,
