@@ -587,6 +587,7 @@ html[data-theme="light"] #premium-pay-btn{color:#fff;background:linear-gradient(
     </div>
     <button id="premium-pay-btn" onclick="startPayment()">월 2,900원 결제하기</button>
     <button class="premium-close" onclick="closePremiumModal()">다음에 하기</button>
+    <button class="premium-close" style="margin-top:4px;font-size:11px;opacity:0.5" onclick="activatePremiumTest()">🧪 테스트 활성화 (개발용)</button>
   </div>
 </div>
 
@@ -1006,7 +1007,7 @@ function startPayment(){
   var orderName=_selectedPlan==='monthly'?'화두 프리미엄 월정기':'화두 프리미엄 평생이용권';
   var orderId='hwadu-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
   if(typeof TossPayments==='undefined'){toast('결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');loadTossSDK(function(){startPayment();});return;}
-  var toss=TossPayments('test_ck_docs_Ovk5rk1EwkEbP0W43n07xlzm');
+  var toss=TossPayments('test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm');
   toss.requestPayment('카드',{
     amount:amount,
     orderId:orderId,
@@ -1015,6 +1016,12 @@ function startPayment(){
     successUrl:window.location.origin+window.location.pathname+'?payment=success&plan='+_selectedPlan,
     failUrl:window.location.origin+window.location.pathname+'?payment=fail'
   }).catch(function(e){if(e.code!=='USER_CANCEL')toast('결제 중 오류가 발생했습니다: '+e.message);});
+}
+function activatePremiumTest(){
+  S.isPremium=true;save();
+  document.getElementById('premium-modal').classList.add('hidden');
+  renderHwadu();renderLibrary&&renderLibrary();
+  toast('🧪 테스트 모드: 프리미엄 활성화됨 (25개 화두 열림)');
 }
 function loadTossSDK(cb){
   if(document.getElementById('toss-sdk'))return cb&&cb();
